@@ -2,8 +2,6 @@
 
 HCI Lab1-1：Automatic Speech Recognition
 
----
-
 # 1. Enivronment
 
 - **Pycharm** Community Edition 2022.1.3
@@ -57,6 +55,6 @@ SpeechRecognition
 
 # 4. References
 
-- ****[How to CODE Siri or Alexa](https://www.youtube.com/watch?v=bwTtvuyyhEQ)** by SalteeKiller
+- **[How to CODE Siri or Alexa](https://www.youtube.com/watch?v=bwTtvuyyhEQ)** by SalteeKiller
 - **[the Tutorial of PyQt5](https://doc.itprojects.cn/0001.zhishi/python.0008.pyqt5rumen/index.html#/README)**  by itprojects.cn
 - [Gif Icons](https://cdn.dribbble.com/users/14038/screenshots/6371784/800-600.gif)
