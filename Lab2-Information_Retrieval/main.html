@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Image Search Engine</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
+    <meta http-equiv='cache-control' content="no-cache, must-revalidate, post-check=0, pre-check=0">
+    <meta http-equiv='expires' content='0'>
+    <meta http-equiv='pragma' content='no-cache'>
+
+    <meta http-equiv="cache-control" content="max-age=0" />
+    <meta http-equiv="cache-control" content="no-cache" />
+    <meta http-equiv="expires" content="0" />
+    <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
+    <meta http-equiv="pragma" content="no-cache" />
+    <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery/jquery-1.9.0.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/knockout/knockout-2.2.1.js"></script>
+
+</head>
+
+<body style="background:	#6495ED;">
+    <!--The Title of This Work-->
+    <div class=" navbar">
+        <div class="navbar-inner">
+            <h1 class="text-center" style="color:black;"><b>IMAGE SEARCH SYSTEM </b>
+            </h1>
+            <h6 class="text-center"><i>Author: Weida Wang 2151300</i></h6>
+        </div>
+    </div>
+    <!--The Input Block-->
+    <div id="main" class="container">
+
+        <table class="table" style="background: white;
+            border: 1px solid beige;
+            box-shadow: 3px 5px 15px 0px rgba(0, 0, 0, 0.2), 3px 5px 15px 0 rgba(0, 0, 0, 0.19);">
+
+            <tr style="background: #1E90FF	;color:white;">
+                <td><b>Chose your file to upload</b></td>
+                <td><b></b></td>
+            </tr>
+            <tr>
+                <td>
+                    <!--对两个搜索按钮进行修改-->
+                    <form method=post enctype=multipart/form-data>
+
+                        <div class="file-input-container">
+                            <!--<input data-bind="value: title" type="text" id="inputTask" placeholder="Path to the image" style="width: 150px;">-->
+                            <label for="customFile" class="btn btn-primary">Choos a File</label>
+                            &nbsp;&nbsp;&nbsp;
+                            <input type="file" name="file" id="customFile" required style="display:none;"
+                                onchange="showFileName(this)">
+                            <span id="fileName"></span>
+                            &nbsp;&nbsp; &nbsp;
+                            <input type="submit" value="Search" onclick="fun()" class="btn btn-primary">
+                        </div>
+                    </form>
+                </td>
+            </tr>
+            <!--Display Row-->
+            <tr id="row0" style="display:none;">
+                <td>
+                    <label style="text-align: center;">The image you've uploaded is <a
+                            style="color:#4169E1;"><b>Here</b></a>!</label>
+                    <img id="uploaded-image" style="max-height: 300px;display: block;margin: auto;">
+                </td>
+            </tr>
+            <!--Clear Button-->
+            <tr id="row1" style="display:none;">
+                <div class="file-input-container">
+                    <td style="text-align:center;">
+                        <a href=""><button id="clear" style="display:none;" class="btn btn-primary">Clear</button></a>
+                    </td>
+                    <td></td>
+                </div>
+            </tr>
+        </table>
+    </div>
+    <!--The Loading Circle-->
+    <center>
+        <img id="load" src="/images/ajax-loader.gif" style="height:100px; width:100px; display:none;">
+    </center>
+    <!--Title of Search Result-->
+    <div id="main" class="container">
+        <table id="res" class="table" style="background: white; border: 1px ;display:none;">
+            <tbody>
+                <tr style="background: #1E90FF	;color:white;">
+                    <td style="text-align:center;">
+                        <h2 class="text-center" style="color:white;"><b>Search Results </b>
+                        </h2>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label style="text-align: center;font-size: larger;">We have found <a
+                                style="color:#0d48f8;font-size: xx-larger;"><i><b>9</b></i></a>
+                            similar images!</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align:center;">
+                        <!-- Add a container for the text and switch -->
+                        <span style="font-size: larger; ">Just show what I like</span>
+                        <div class="switch-container">
+                            <label class="switch">
+                                <input type="checkbox" id="toggle-switch">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align:center;">
+                        <!--add four select button-->
+                        <span style="font-size: larger; ">Select by tags: </span>
+                        <button id="tag0" style="background-color: #4169E1;color: white;" class="selected"
+                            onclick="toggleButton(this)">tag0</button>
+                        <button id="tag1" style="background-color: #4169E1;color: white;" class="selected"
+                            onclick="toggleButton(this)">tag1</button>
+                        <button id="tag2" style="background-color: #4169E1;color: white;" class="selected"
+                            onclick="toggleButton(this)">tag2</button>
+                        <button id="tag3" style="background-color: #4169E1;color: white;" class="selected"
+                            onclick="toggleButton(this)">tag3</button>
+                        <button id="tag4" style="background-color: #4169E1;color: white;" class="selected"
+                            onclick="toggleButton(this)">tag4</button>
+                        <button id="tag5" style="background-color: #4169E1;color: white;" class="selected"
+                            onclick="toggleButton(this)">tag5</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <!--The Table of the Results-->
+    <div id="main" class="container">
+        <table id="table" class="table" style="background: #1E90FF; border: 5px ;display:none;">
+            <tbody>
+                <tr>
+                    <td class="result-cell">
+                        <img id="img0" src="" alt="" class="image-box" onclick="toggleScale(this)">
+                        <button id="btn0" class="like-button" onclick="toggleOpacity(this)">&#9829;</button>
+                    </td>
+
+                    <td class="result-cell">
+                        <img id="img1" src="" alt="Norway" class="image-box" onclick="toggleScale(this)">
+                        <button id="btn1" class="like-button" onclick="toggleOpacity(this)">&#9829;</button>
+                    </td>
+                    <td class="result-cell">
+                        <img id="img2" src="" alt="Norway" class="image-box" onclick="toggleScale(this)">
+                        <button id="btn2" class="like-button" onclick="toggleOpacity(this)">&#9829;</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="result-cell">
+                        <img id="img3" src="" alt="Norway" class="image-box" onclick="toggleScale(this)">
+                        <button id="btn3" class="like-button" onclick="toggleOpacity(this)">&#9829;</button>
+                    </td>
+                    <td class="result-cell">
+                        <img id="img4" src="" alt="Norway" class="image-box" onclick="toggleScale(this)">
+                        <button id="btn4" class="like-button" onclick="toggleOpacity(this)">&#9829;</button>
+                    </td>
+                    <td class="result-cell">
+                        <img id="img5" src="" alt="Norway" class="image-box" onclick="toggleScale(this)">
+                        <button id="btn5" class="like-button" onclick="toggleOpacity(this)">&#9829;</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="result-cell">
+                        <img id="img6" src="" alt="Norway" class="image-box" onclick="toggleScale(this)">
+                        <button id="btn6" class="like-button" onclick="toggleOpacity(this)">&#9829;</button>
+                    </td>
+                    <td class="result-cell">
+                        <img id="img7" src="" alt="Norway" class="image-box" onclick="toggleScale(this)">
+                        <button id="btn7" class="like-button" onclick="toggleOpacity(this)">&#9829;</button>
+                    </td>
+                    <td class="result-cell">
+                        <img id="img8" src="" alt="Norway" class="image-box" onclick="toggleScale(this)">
+                        <button id="btn8" class="like-button" onclick="toggleOpacity(this)">&#9829;</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <style>
+        .file-input-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .result-cell {
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            transition: 0.3s;
+            width: 300px;
+            height: 350px;
+            padding-top: 0px;
+            padding-bottom: 0px;
+            padding-right: 0px;
+            padding-left: 0px;
+            border-left-width: 1px;
+            border-bottom-width: 1px;
+            border-right-width: 1px;
+            background: white;
+        }
+
+        .image-box {
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            transition: 0.3s;
+            width: 200px;
+            height: 200px;
+            padding-top: 5px;
+            padding-bottom: 5px;
+            padding-right: 5px;
+            padding-left: 5px;
+            display: block;
+            margin: auto;
+            margin-top: 70px;
+            opacity: 1;
+        }
+
+        .img-box {
+            width: 100%;
+            height: auto;
+            max-width: 100%;
+            display: block;
+            margin: auto;
+            opacity: 1;
+        }
+
+        .like-button {
+            margin-top: 10px;
+            margin-bottom: 10px;
+            display: block;
+            margin: auto;
+            background-color: transparent;
+            border: none;
+            padding-top: 10px;
+            padding-bottom: 5px;
+            cursor: pointer;
+            font-size: 30px;
+            color: #ccc;
+        }
+    </style>
+    <style id="switch">
+        .switch-container {
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .switch-text {
+            margin-right: 10px;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+            margin-left: 20px;
+        }
+
+        .switch input {
+            display: none;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        input:checked+.slider {
+            background-color: #4169E1;
+        }
+
+        input:focus+.slider {
+            box-shadow: 0 0 1px #4169E1;
+        }
+
+        input:checked+.slider:before {
+            -webkit-transform: translateX(26px);
+            -ms-transform: translateX(26px);
+            transform: translateX(26px);
+        }
+
+        /* Rounded sliders */
+        .slider.round {
+            border-radius: 34px;
+        }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
+    </style>
+    <script type="text/javascript">
+        function showFileName(input) {
+            var label = document.getElementById('fileName');
+            label.innerHTML = input.files[0].name;
+            //将输入的图片展示出来
+            $('#row0').show();
+            var file = input.files[0];
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                var img = document.getElementById("uploaded-image");
+                img.src = e.target.result;
+            }
+            reader.readAsDataURL(file);
+        }
+        function myFunction() {
+            document.getElementById("predictedResult").innerHTML = "";
+            $('#clear').hide();
+        }
+        function fun() {
+            $('#load').show();
+            $("form").submit(function (evt) {
+                //$('#loader-icon').show(); 
+                evt.preventDefault();
+                //$('#loader-icon').show();
+                var formData = new FormData($(this)[0]);
+                $.ajax({
+                    url: 'imgUpload',
+                    type: 'POST',
+                    data: formData,
+                    //async: false,
+                    cache: false,
+                    contentType: false,
+                    enctype: 'multipart/form-data',
+                    processData: false,
+                    success: function (response) {
+                        $('#load').hide();
+                        $('#res').show();
+                        $('#row1').show();
+                        //$('#clear').show();
+                        //console.log(response[1]);
+                        //document.getElementById("predictedResult").innerHTML= response; 
+                        for (let i = 0; i <= 8; i++) {
+                            if (response.hasOwnProperty("image" + i)) {
+                                $("#img" + i).attr("src", response["image" + i]);
+                                // 将图像特征添加到其class中
+                                var feature = response["feature" + i];
+                                var count = feature.length;
+                                for (let j = 0; j < count; j++) {
+                                    $("#img" + i).addClass(feature[j]);
+                                }
+                            }
+                        }
+                        var tags = response.all_features;
+                        document.querySelector("#tag0").innerHTML = tags[0];
+                        document.querySelector("#tag1").innerHTML = tags[1];
+                        document.querySelector("#tag2").innerHTML = tags[2];
+                        document.querySelector("#tag3").innerHTML = tags[3];
+                        document.querySelector("#tag4").innerHTML = tags[4];
+                        document.querySelector("#tag5").innerHTML = tags[5];
+                        $('#table').show();
+                        $('#clear').show();
+
+
+                    }
+                });
+                return false;
+            })
+        };
+        function toggleOpacity(button) {
+            if ($(button).hasClass("selected")) {
+                $(button).removeClass("selected");
+                button.style.color = "#ccc";
+            } else {
+                $(button).addClass("selected");
+                button.style.color = "#4169E1";
+            }
+        }
+        function toggleScale(img) {
+            if (img.style.transform === 'scale(1)') {
+                img.style.transform = 'scale(1.5)';
+            } else {
+                img.style.transform = 'scale(1)';
+            }
+        }
+        //不需要显式地调用任何函数，因为这个功能已经绑定到开关的“change”事件上。
+        $(document).ready(function () {
+            $("#toggle-switch").change(function () {
+                if (this.checked) {
+                    for (let i = 0; i <= 8; i++) {
+                        if (!$("#btn" + i).hasClass("selected")) {
+                            $("#img" + i).css("opacity", 0.1);
+                        }
+                        $("#img" + i).css("transform", "scale(1.5)")
+                    }
+                } else {
+                    for (let i = 0; i <= 8; i++) {
+                        $("#img" + i).css("opacity", 1);
+                        $("#img" + i).css("transform", "scale(1)")
+                    }
+                }
+            });
+        });
+        function toggleButton(button) {
+            tag = button.innerHTML;
+            if ($(button).hasClass("selected")) {
+                $(button).removeClass("selected");
+                button.style.background = "white";
+                button.style.color = 'black';
+                for (let i = 0; i <= 8; i++) {
+                    if ($('#img' + i).hasClass(tag)) {
+                        $("#img" + i).css("opacity", 0.1);
+                    }
+                }
+            } else {
+                $(button).addClass("selected");
+                button.style.background = "#4169E1";
+                button.style.color = 'white';
+                for (let i = 0; i <= 8; i++) {
+                    if ($('#img' + i).hasClass(tag)) {
+                        $("#img" + i).css("opacity", 1);
+                    }
+                }
+            }
+
+        }
+
+    </script>
+</body>
+
+</html>
