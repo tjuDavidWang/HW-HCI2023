@@ -25,6 +25,8 @@ Place these datasets in the root directory:
 - *salaries-by-college-type.csv*
 - *degrees-that-pay-back.csv*
 
+The data referenced in this analysis was sourced from Kaggle's dataset repository, specifically from the URL: https://www.kaggle.com/datasets/wsj/college-salaries/data.
+
 ## **Running**
 
 Run **`python dashboard.py`** and open **`http://127.0.0.1:8050/`** in your browser.
